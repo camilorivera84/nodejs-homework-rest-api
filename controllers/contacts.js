@@ -65,21 +65,17 @@ const updateContact = async (req, res, next) => {
 };
 
 const updateStatusContact = async (contactId, body) => {
-  try {
-    const updatedContact = await Contact.findByIdAndUpdate(
-      contactId,
-      { favorite: body },
-      { new: true }
-    );
+  const updatedContact = await Contact.findByIdAndUpdate(
+    contactId,
+    { favorite: body },
+    { new: true }
+  );
 
-    if (!updatedContact) {
-      return null;
-    }
-
-    return updatedContact;
-  } catch (error) {
-    throw error;
+  if (!updatedContact) {
+    return { message: 'Contact not found' };
   }
+
+  return updatedContact;
 };
 
 module.exports = {
