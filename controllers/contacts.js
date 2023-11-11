@@ -1,4 +1,5 @@
 const Contact = require('../models/contact');
+const { addContactSchema } = require('../validationSchemas');
 
 const listContacts = async (req, res, next) => {
   try {
@@ -23,6 +24,12 @@ const getContactById = async (req, res, next) => {
 };
 
 const addContact = async (req, res, next) => {
+  const { error } = addContactSchema.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
   const { name, email, phone } = req.body;
   try {
     const newContact = new Contact({ name, email, phone });
